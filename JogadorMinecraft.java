@@ -13,6 +13,10 @@ public class JogadorMinecraft {
         this.inventario = new ArrayList<>();
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
     public void minerar() {
         System.out.println(nome + " está minerando...");
         blocosColetados++;
