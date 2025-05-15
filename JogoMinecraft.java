@@ -6,7 +6,7 @@ public class JogoMinecraft {
 
     var alex = new JogadorMinecraft("Alex");
 
-    while (true) {
+    while (alex.estaVivo()) {
       switch (gerador.nextInt(3)) {
           case 0:
               alex.minerar();
@@ -17,9 +17,17 @@ public class JogoMinecraft {
           default:
               alex.construir();
       }
+
+      if (gerador.nextInt(4) == 0) {
+        alex.levarDano();
+      }
+
       System.out.println(alex);
       System.out.println("============");
+
       Thread.sleep(5000);
     }
+
+    System.out.println("GAME OVER");
   }
 }
