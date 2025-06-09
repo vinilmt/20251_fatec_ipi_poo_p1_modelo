@@ -1,3 +1,4 @@
+package br.com.fatec;
 import java.util.*;
 
 public class JogadorMinecraft {
