@@ -1,14 +1,32 @@
 package br.com.fatec;
 import java.util.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class JogadorMinecraft {
+    private int codigo;
     private String nome;
     private int vida;
     private int blocosColetados;
     private List<String> inventario;
+    private int prob_construir;
+    private int prob_mineirar;
+    private int prob_coletar_madeira;
+    private int vitorias;
+    private int derrotas;
 
-    public JogadorMinecraft(String nome) {
+    public JogadorMinecraft(String nome, int codigo, int prob_construir, int prob_mineirar, int prob_coletar_madeira, int vitorias, int derrotas) {
         this.nome = nome;
+        this.codigo = codigo;
+        this.prob_construir = prob_construir;
+        this.prob_mineirar = prob_mineirar;
+        this.prob_coletar_madeira = prob_coletar_madeira;
+        this.vitorias = vitorias;
+        this.derrotas = derrotas;
         this.vida = 10;
         this.blocosColetados = 0;
         this.inventario = new ArrayList<>();

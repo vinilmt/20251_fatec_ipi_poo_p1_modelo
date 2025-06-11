@@ -1,34 +1,46 @@
 package br.com.fatec;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class JogoMinecraft {
-  public static void main(String[] args) throws Exception {
-    var gerador = new Random();
+  public static void main(String[] args) {
+    try{
+      var dao = new JogadorMinecraftDAO();
+      ArrayList<JogadorMinecraft> jogadores = dao.listarJogadores();
+      var gerador = new Random();
+      var jogador1 = jogadores.get(0);
+      var jogador2 = jogadores.get(1);
 
-    var alex = new JogadorMinecraft("Alex");
-    var steve = new JogadorMinecraft("Steve Construtor");
+      while (jogador1.estaVivo() || jogador2.estaVivo()) {
+        if (jogador1.estaVivo()) {
+          int[] probabilidade = new int[] {jogador1.getProb_mineirar(), jogador1.getProb_coletar_madeira(), jogador1.getProb_construir()};
+          executarAcao(jogador1, gerador, probabilidade);
+          System.out.println(jogador1);
+          processarDanoProprio(jogador1, jogador2, gerador);
+        }
 
-    while (alex.estaVivo() || steve.estaVivo()) {
-      if (alex.estaVivo()) {
-        executarAcao(alex, gerador, new int[] {1,1,1});
-        System.out.println(alex);
-        processarDanoProprio(alex, steve, gerador);
+        if (jogador2.estaVivo()) {
+          
+          int[] probabilidade = new int[] {jogador2.getProb_mineirar(), jogador2.getProb_coletar_madeira(), jogador2.getProb_construir()};
+          executarAcao(jogador2, gerador, probabilidade);
+          System.out.println(jogador2);
+          processarDanoProprio(jogador2, jogador1, gerador);
+        }
+        
+        if (jogador1.estaVivo() && jogador2.estaVivo()) {
+          processarAtaque(jogador1, jogador2, gerador);
+        }
+
+        System.out.println("============");
+        Thread.sleep(5000);
       }
 
-      if (steve.estaVivo()) {
-        executarAcao(steve, gerador, new int[] {1,3,6});
-        System.out.println(steve);
-        processarDanoProprio(steve, alex, gerador);
-      }
-      
-      if (alex.estaVivo() && steve.estaVivo()) {
-        processarAtaque(alex, steve, gerador);
-      }
-
-      System.out.println("============");
-      Thread.sleep(5000);
+    } catch (Exception e) {
+      e.printStackTrace();
+      JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do jogo!");
     }
-
     System.out.println("GAME OVER");
   }
 

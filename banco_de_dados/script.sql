@@ -9,7 +9,7 @@ CREATE TABLE personagens(
     prob_coletar_madeira INT,
     num_vitorias INT,
     num_derrotas INT
-)
+);
 
 INSERT INTO personagens(nome, prob_construir, prob_mineirar, prob_coletar_madeira, num_vitorias, num_derrotas)
 VALUES
