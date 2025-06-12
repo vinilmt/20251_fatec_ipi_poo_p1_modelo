@@ -24,7 +24,6 @@ public class JogoMinecraft {
         }
 
         if (jogador2.estaVivo()) {
-
           int[] probabilidade = new int[] { jogador2.getProbMineirar(), jogador2.getProbColetarMadeira(),
               jogador2.getProbConstruir() };
           executarAcao(jogador2, gerador, probabilidade);
@@ -32,12 +31,13 @@ public class JogoMinecraft {
           processarDanoProprio(jogador2, jogador1, gerador);
         }
 
-        if (jogador1.estaVivo() && jogador2.estaVivo()) {
-          processarAtaque(jogador1, jogador2, gerador, dao);
-        }
+        if (jogador1.estaVivo() && jogador2.estaVivo()) processarAtaque(jogador1, jogador2, gerador, dao);
 
         System.out.println("============");
         Thread.sleep(5000);
+        
+        if (jogador1.estaVivo()) atualizarProbabilidades(jogador1, gerador, dao);
+        if (jogador2.estaVivo()) atualizarProbabilidades(jogador2, gerador, dao);
       }
 
     } catch (Exception e) {
@@ -95,5 +95,25 @@ public class JogoMinecraft {
         dao.atualizarJogador(jogador1);
       }
     }
+  }
+
+  private static void atualizarProbabilidades(JogadorMinecraft jogador, Random gerador, JogadorMinecraftDAO dao) throws Exception {
+    int a = gerador.nextInt(102);
+    int b = gerador.nextInt(101);
+    if (b >= a) b++;
+
+    int corteBaixo, corteAlto;
+    if (a > b) {
+      corteBaixo = b;
+      corteAlto = a;
+    } else {
+      corteBaixo = a;
+      corteAlto = b;
+    }
+    
+    jogador.setProbMineirar(corteBaixo);
+    jogador.setProbColetarMadeira(corteAlto - corteBaixo - 1);
+    jogador.setProbConstruir(101 - corteAlto); 
+    dao.atualizarJogador(jogador);
   }
 }
