@@ -1,4 +1,5 @@
 package br.com.fatec;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class JogoMinecraft {
   public static void main(String[] args) {
-    try{
+    try {
       var dao = new JogadorMinecraftDAO();
       ArrayList<JogadorMinecraft> jogadores = dao.listarJogadores();
       var gerador = new Random();
@@ -15,22 +16,24 @@ public class JogoMinecraft {
 
       while (jogador1.estaVivo() || jogador2.estaVivo()) {
         if (jogador1.estaVivo()) {
-          int[] probabilidade = new int[] {jogador1.getProb_mineirar(), jogador1.getProb_coletar_madeira(), jogador1.getProb_construir()};
+          int[] probabilidade = new int[] { jogador1.getProbMineirar(), jogador1.getProbColetarMadeira(),
+              jogador1.getProbConstruir() };
           executarAcao(jogador1, gerador, probabilidade);
           System.out.println(jogador1);
           processarDanoProprio(jogador1, jogador2, gerador);
         }
 
         if (jogador2.estaVivo()) {
-          
-          int[] probabilidade = new int[] {jogador2.getProb_mineirar(), jogador2.getProb_coletar_madeira(), jogador2.getProb_construir()};
+
+          int[] probabilidade = new int[] { jogador2.getProbMineirar(), jogador2.getProbColetarMadeira(),
+              jogador2.getProbConstruir() };
           executarAcao(jogador2, gerador, probabilidade);
           System.out.println(jogador2);
           processarDanoProprio(jogador2, jogador1, gerador);
         }
-        
+
         if (jogador1.estaVivo() && jogador2.estaVivo()) {
-          processarAtaque(jogador1, jogador2, gerador);
+          processarAtaque(jogador1, jogador2, gerador, dao);
         }
 
         System.out.println("============");
@@ -47,16 +50,16 @@ public class JogoMinecraft {
   private static void executarAcao(JogadorMinecraft jogador, Random gerador, int[] pesos) {
     int total = 0;
     for (int i = 0; i < pesos.length; i++) {
-        total += pesos[i];
+      total += pesos[i];
     }
-    
+
     int escolha = gerador.nextInt(total);
     if (escolha < pesos[0]) {
-        jogador.minerar();
+      jogador.minerar();
     } else if (escolha < pesos[0] + pesos[1]) {
-        jogador.coletarMadeira();
+      jogador.coletarMadeira();
     } else {
-        jogador.construir();
+      jogador.construir();
     }
   }
 
@@ -69,18 +72,27 @@ public class JogoMinecraft {
     }
   }
 
-  private static void processarAtaque(JogadorMinecraft jogador1, JogadorMinecraft jogador2, Random gerador) {
+  private static void processarAtaque(JogadorMinecraft jogador1, JogadorMinecraft jogador2, Random gerador,
+      JogadorMinecraftDAO dao) throws Exception {
     if (gerador.nextBoolean()) {
       System.out.println(jogador1.getNome() + " atacou " + jogador2.getNome() + "!");
       jogador2.levarDano();
       if (!jogador2.estaVivo()) {
         System.out.println(jogador1.getNome() + " venceu!");
+        jogador1.setVitorias(jogador1.getVitorias() + 1);
+        jogador2.setDerrotas(jogador2.getDerrotas() + 1);
+        dao.atualizarJogador(jogador1);
+        dao.atualizarJogador(jogador2);
       }
     } else {
       System.out.println(jogador2.getNome() + " atacou " + jogador1.getNome() + "!");
       jogador1.levarDano();
       if (!jogador1.estaVivo()) {
         System.out.println(jogador2.getNome() + " venceu!");
+        jogador2.setVitorias(jogador2.getVitorias() + 1);
+        jogador1.setDerrotas(jogador1.getDerrotas() + 1);
+        dao.atualizarJogador(jogador2);
+        dao.atualizarJogador(jogador1);
       }
     }
   }

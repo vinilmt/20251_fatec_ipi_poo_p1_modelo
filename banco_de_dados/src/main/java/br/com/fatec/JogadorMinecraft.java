@@ -1,4 +1,5 @@
 package br.com.fatec;
+
 import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,18 +14,19 @@ public class JogadorMinecraft {
     private int vida;
     private int blocosColetados;
     private List<String> inventario;
-    private int prob_construir;
-    private int prob_mineirar;
-    private int prob_coletar_madeira;
+    private int probConstruir;
+    private int probMineirar;
+    private int probColetarMadeira;
     private int vitorias;
     private int derrotas;
 
-    public JogadorMinecraft(String nome, int codigo, int prob_construir, int prob_mineirar, int prob_coletar_madeira, int vitorias, int derrotas) {
+    public JogadorMinecraft(String nome, int codigo, int probConstruir, int probMineirar, int probColetarMadeira,
+            int vitorias, int derrotas) {
         this.nome = nome;
         this.codigo = codigo;
-        this.prob_construir = prob_construir;
-        this.prob_mineirar = prob_mineirar;
-        this.prob_coletar_madeira = prob_coletar_madeira;
+        this.probConstruir = probConstruir;
+        this.probMineirar = probMineirar;
+        this.probColetarMadeira = probColetarMadeira;
         this.vitorias = vitorias;
         this.derrotas = derrotas;
         this.vida = 10;
@@ -69,8 +71,7 @@ public class JogadorMinecraft {
     @Override
     public String toString() {
         return String.format(
-            "%s - Vida: %d, Blocos: %d, Inventário: %s",
-            nome, vida, blocosColetados, inventario
-        );
+                "%s - Vida: %d, Blocos: %d, Inventário: %s, Vitórias: %d, Derrotas: %d",
+                nome, vida, blocosColetados, inventario, vitorias, derrotas);
     }
 }
